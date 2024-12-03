@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: firstpod-image
+  labels:
+    tier: web
+    type: nginx
+spec:
+  containers:
+  -  name: mynginx
+     image: nginx:1.20.a1234561

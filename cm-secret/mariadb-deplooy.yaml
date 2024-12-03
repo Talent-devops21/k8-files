@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mariadb
+  name: mariadb-deployment-pvt-reg-success
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      imagePullSecrets:
+      - name: docker-cred
+      containers:
+      - name: mariadb
+        image: malleshdevops/devops21:mariadb-10.3
+        env:
+          - name: MYSQL_ROOT_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: mariadb-root-password
+                key: password
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mariadb-volume-1
+      volumes:
+      - emptyDir: {}
+        name: mariadb-volume-1
+

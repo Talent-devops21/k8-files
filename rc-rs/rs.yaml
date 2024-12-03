@@ -1,0 +1,31 @@
+apiVersion: apps/v1 
+kind: ReplicaSet
+metadata:
+  name: rs-example
+  labels:
+    topic: rc 
+spec:
+     ## keep pod defintion here
+  replicas: 10
+  selector:
+     matchLabels:
+       type: nginx
+  template:
+    metadata:
+      name: pod-node-selector
+      labels:
+        tier: web
+        type: nginx
+    spec:
+      containers:
+      - name: mynginx
+        image: nginx:1.20.1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m 
+            memory: 100Mi 
+          limits:
+            cpu: 100m
+            memory: 200Mi

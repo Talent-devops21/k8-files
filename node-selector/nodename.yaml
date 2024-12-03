@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-node-name
+  labels:
+    tier: web
+    type: nginx
+spec:
+  containers:
+  -  name: mynginx
+     image: nginx:1.20.1
+  nodeName: k821-worker1

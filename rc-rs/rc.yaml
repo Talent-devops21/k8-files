@@ -1,0 +1,30 @@
+apiVersion: v1 
+kind: ReplicationController
+metadata:
+  name: rc-test 
+  labels:
+    topic: rc 
+spec:
+     ## keep pod defintion here
+  replicas: 5
+  selector:
+    type: nginx
+  template:
+    metadata:
+      name: pod-node-selector
+      labels:
+        tier: web
+        type: nginx
+    spec:
+      containers:
+      - name: mynginx
+        image: nginx:1.20.1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m 
+            memory: 100Mi 
+          limits:
+            cpu: 100m
+            memory: 200Mi

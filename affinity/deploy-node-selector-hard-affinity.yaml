@@ -1,0 +1,52 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: deploy-test
+  labels:
+    topic: rc 
+spec:
+     ## keep pod defintion here
+  replicas: 1
+  selector:
+     matchLabels:
+       type: nginx
+  template:
+    metadata:
+      name: pod-node-selector
+      labels:
+        tier: web
+        type: nginx
+    spec:
+      containers:
+      - name: mynginx
+        image: nginx:1.20.1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m 
+            memory: 100Mi 
+          limits:
+            cpu: 100m
+            memory: 200Mi
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+      - name: fluentbit
+        image: fluent/fluent-bit:3.2.0-amd64
+      nodeSelector:
+        env: dev
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: tier
+                operator: In
+                values:
+                - web

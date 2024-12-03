@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx
+  name: nginx-deploy-cm-env
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      volumes:
+      - name: www
+        configMap:
+          name: game-config
+      containers:
+      - image: nginx
+        name: nginx
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+        env:
+          - name: SPECIAL_CATEGORY
+            valueFrom:
+              configMapKeyRef:
+                name: special-config
+                key: SPECIAL_LEVEL
+          - name: TALENT
+            valueFrom:
+              configMapKeyRef:
+                name: special-config
+                key: SPECIAL_TYPE
+          - name: TIMEOUT
+            valueFrom:
+              configMapKeyRef:
+                name: special-config
+                key: TIMEOUT
+

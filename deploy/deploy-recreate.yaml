@@ -1,0 +1,33 @@
+apiVersion: apps/v1 
+kind: Deployment
+metadata:
+  name: deploy-recreate
+  labels:
+    topic: rc 
+spec:
+     ## keep pod defintion here
+  replicas: 4
+  strategy:
+    type: Recreate
+  selector:
+     matchLabels:
+       type: nginx
+  template:
+    metadata:
+      name: pod-node-selector
+      labels:
+        tier: web
+        type: nginx
+    spec:
+      containers:
+      - name: mynginx
+        image: nginx:1.21.1
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m 
+            memory: 100Mi 
+          limits:
+            cpu: 100m
+            memory: 200Mi

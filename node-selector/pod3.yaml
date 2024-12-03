@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-node-selector-fail-1
+  labels:
+    tier: web
+    type: nginx
+spec:
+  containers:
+  -  name: mynginx
+     image: nginx:1.20.1
+     resources:
+       requests:
+         memory: 5Gi
+       limits:
+         memory: 5Gi
+  nodeSelector:
+    env: prod
+    type: linux

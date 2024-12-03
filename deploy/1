@@ -1,0 +1,29 @@
+apiVersion: apps/v1 
+kind: DaemonSet
+metadata:
+  name: nginx-daemonset
+  labels:
+    topic: rc 
+spec:
+  selector:
+     matchLabels:
+       type: nginx
+  template:
+    metadata:
+      name: pod-node-selector
+      labels:
+        tier: web
+        type: nginx
+    spec:
+      containers:
+      - name: mynginx
+        image: fluent/fluent-bit:3.2.0-amd64
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 50m 
+            memory: 100Mi 
+          limits:
+            cpu: 100m
+            memory: 200Mi

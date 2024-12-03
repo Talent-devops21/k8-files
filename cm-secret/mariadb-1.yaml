@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mariadb
+  name: mariadb-deployment-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: docker.io/mariadb:10.4
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        env:
+          - name: MARIADB_ROOT_PASSWORD
+            value: root123
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mariadb-volume-1
+      volumes:
+      - emptyDir: {}
+        name: mariadb-volume-1
+
